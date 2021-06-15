@@ -1,0 +1,68 @@
+
+<table>
+        <tr>
+            <th>Stock-Name  </th> 
+            <th> Cost-Price  </th>
+            <th> Volume </th>
+             <th> Vwap </th>
+             <th> Valuation </th>
+             <th> Holding  </th>
+        </tr>
+    <tr  *ngFor="let stock of getAllStocks()">
+        <td>{{stock.companyName}} </td>
+        <td>{{stock.costPrice}} </td>
+        <td>{{stock.volume}} </td>
+        <td>{{stock.vwap}}  </td>
+        <td>{{(stock.costPrice < stock.vwap) ?"Fair-Price":"Over-Priced"}}</td>
+        <td>{{stock.holding}}</td>
+    </tr>
+</table>
+
+<hr>
+
+    Enter the BidPrice
+    <input type="text" #myCost/>
+    Enter the StockName
+    <input type="text" #myStock/>
+    <button (click)="getBidCost(myCost.value,myStock.value)">Submit</button>
+
+<div *ngIf="isAccepted;then buyTemplate else rejectTemplate">
+    
+</div>
+
+<ng-template #buyTemplate>
+    <button [hidden]="!isAccepted" (click)="doBuyStock()">Buy Package</button>
+</ng-template>
+<ng-template #rejectTemplate>
+    <h3 [hidden]="isAccepted" > Give a proper bid price</h3>
+</ng-template>
+
+<table>
+    <tr>
+        <th>Stock-Name  </th> 
+        <th> Cost-Price  </th>
+        <th> Volume </th>
+        <th> Vwap </th>
+        <th> Valuation </th>
+        <th> Holding  </th>
+    </tr>
+    <tr *ngFor="let stock of getAllBoughtStocks()" >
+        <td  > 
+            <div *ngIf="stock.vwap > stock.costPrice;then ifblock else elseblock">
+            </div>
+            <ng-template #ifblock>
+                <div style="color: green;">{{stock.companyName}}  </div>
+            </ng-template>
+            <ng-template #elseblock>
+                <div style="color:red;">{{stock.companyName}}  </div>
+            </ng-template>
+        </td>
+        <td>  {{stock.costPrice}} </td>
+        <td>   {{stock.volume}} </td>
+        <td> {{stock.vwap}} </td>
+        <td>  {{(stock.costPrice < stock.vwap) ?"Fair-Price":"Over-Priced"}}</td>
+        <td>  {{stock.holding}}</td>
+    </tr>
+    
+        
+    </table>
